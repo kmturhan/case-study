@@ -1,4 +1,5 @@
 ﻿using CaseStudy.Core.Repository.Concrete;
+using CaseStudy.Core.Repository.Models;
 
 namespace CaseStudy.Core.Repository.Abstract
 {

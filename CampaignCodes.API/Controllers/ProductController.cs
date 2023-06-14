@@ -10,10 +10,11 @@ namespace CampaignCodes.API.Controllers
 	[Route("api/[controller]")]
 	public class ProductController : ControllerBase
 	{
-		Code code = new Code();
+		
 		[HttpGet("GetList")]
 		public List<Code> GetList()
 		{
+			Code code = new Code();
 			return code.GetCodeList();
 		}
 
@@ -21,14 +22,16 @@ namespace CampaignCodes.API.Controllers
 		[HttpPost("CodeGenerates")]
 		public IEnumerable<Code> CodeGenerates(CodeParameter parameter)
 		{
+			Code code = new Code();
 			return code.CodeGenerates(parameter.CodeLength, parameter.CodeCount); ;
 		}
 		
 		// POST api/<ProductController>/5
 		[HttpPost("Check")]
-		public Code Check(Code code)
+		public Code Check(Code userCode)
 		{
-			return code.CodeCheck(code.UniqueCode);
+			Code code2 = new Code();
+			return code2.CodeCheck(userCode.UniqueCode);
 		}
 	}
 }

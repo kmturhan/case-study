@@ -1,24 +1,17 @@
 ﻿using CaseStudy.Core.Repository.Abstract;
+using CaseStudy.Core.Repository.Models;
 
 namespace CaseStudy.Core.Repository.Concrete
 {
-	public class Code : ICode
+	public class CodeProvider : ICode
 	{
-		public int Id { get; set; }
-		public string UniqueCode { get; set; }
-		public bool IsValid { get; set; }
-		public DateTime CreatedDate { get; set; }
-		public DateTime UpdatedDate { get; set; }
-
-
-		string str = "ACDEFGHKLMNPRTXYZ234579";
-		private List<char> charSet = new List<char>();
+		
+		private static CodeProvider instance = null;
+		public static CodeProvider Instance => instance ?? (instance = new CodeProvider());
+		private static string str = "ACDEFGHKLMNPRTXYZ234579";
+		private static List<char> charSet = str.ToList();
 		private static List<Code> codeList = new List<Code>();
-
-		public Code()
-		{
-			charSet.AddRange(str);
-		}
+		
 		public List<Code> GetCodeList()
 		{
 			return codeList;
@@ -40,7 +33,7 @@ namespace CaseStudy.Core.Repository.Concrete
 				{
 					goto section1;
 				}
-				codeList.Add(new Code { Id = 1, UniqueCode = code, IsValid = false, CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now });
+				codeList.Add(new Code { UniqueCode = code, IsValid = false, CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now });
 			}
 			return codeList;
 		}

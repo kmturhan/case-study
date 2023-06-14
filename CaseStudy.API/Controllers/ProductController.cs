@@ -1,5 +1,6 @@
 ﻿
 using CaseStudy.Core.Repository.Concrete;
+using CaseStudy.Core.Repository.Models;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,25 +11,28 @@ namespace CaseStudy.API.Controllers
 	[Route("api/[controller]")]
 	public class ProductController : ControllerBase
 	{
-		Code code = new Code();
+		
 		[HttpGet("GetList")]
 		public List<Code> GetList()
 		{
-			return code.GetCodeList();
+			
+			return CodeProvider.Instance.GetCodeList();
 		}
 
 		// GET: api/<ProductController>
 		[HttpPost("CodeGenerates")]
 		public IEnumerable<Code> CodeGenerates(CodeParameter parameter)
 		{
-			return code.CodeGenerates(parameter.CodeLength, parameter.CodeCount); ;
+			CodeProvider code = new CodeProvider();
+			return CodeProvider.Instance.CodeGenerates(parameter.CodeLength, parameter.CodeCount); ;
 		}
 		
 		// POST api/<ProductController>/5
 		[HttpPost("Check")]
-		public Code Check(Code code)
+		public Code Check(Code userCode)
 		{
-			return code.CodeCheck(code.UniqueCode);
+			CodeProvider code = new CodeProvider();
+			return CodeProvider.Instance.CodeCheck(userCode.UniqueCode);
 		}
 	}
 }
