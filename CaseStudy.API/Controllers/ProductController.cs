@@ -1,10 +1,10 @@
 ﻿
-using CampaignCodes.Core.Repository.Concrete;
+using CaseStudy.Core.Repository.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace CampaignCodes.API.Controllers
+namespace CaseStudy.API.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]")]
