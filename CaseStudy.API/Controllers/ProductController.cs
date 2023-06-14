@@ -15,29 +15,25 @@ namespace CaseStudy.API.Controllers
 		[HttpGet("GetList")]
 		public List<Code> GetList()
 		{
-			
 			return CodeProvider.Instance.GetCodeList();
 		}
 
-		// GET: api/<ProductController>
 		[HttpPost("CodeGenerates")]
-		public IEnumerable<Code> CodeGenerates(CodeParameter parameter)
+		public IEnumerable<Code> CodeGenerates(int codeLength = 8, int codeCount = 1000)
 		{
-			CodeProvider code = new CodeProvider();
-			return CodeProvider.Instance.CodeGenerates(parameter.CodeLength, parameter.CodeCount); ;
+			return CodeProvider.Instance.CodeGenerates(codeLength, codeCount);
 		}
-		
-		// POST api/<ProductController>/5
-		[HttpPost("Check")]
-		public Code Check(Code userCode)
+
+		[HttpPut("UseCode")]
+		public Code UseCode(Code userCode)
 		{
-			CodeProvider code = new CodeProvider();
+			return CodeProvider.Instance.CodeCheck(userCode.UniqueCode);
+		}
+
+		[HttpPut("UseCodes")]
+		public Code UseCodes(Code userCode)
+		{
 			return CodeProvider.Instance.CodeCheck(userCode.UniqueCode);
 		}
 	}
-}
-public class CodeParameter
-{
-	public int CodeLength { get; set; } = 8;
-	public int CodeCount { get; set; } = 1000;
 }
