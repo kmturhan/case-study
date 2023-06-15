@@ -77,16 +77,25 @@ namespace CaseStudy.API.Controllers
 					rows.Add(string.Join(" ", currentRowWords.Select(x => x.Description2)));
 					foreach (var currentWord in currentRowWords)
                     {
-
+						/*
+						 * Aynı sırada olan tüm kelimeler listeden siliniyor.
+						 */
 						newParseJson.Remove(currentWord);
                     }
                 }
+				/*
+				 * En son listedeki boş elemanlar listeden siliniyor.
+				 */
 				rows = rows.Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
-
-
+				/*
+				 * response.json içinde ilk object tüm data olduğu için skip metoduyla bu object atlanıyor.
+				 */
 				int lineNumber = 0;
 				foreach (var item in rows.Skip(1))
 				{
+					/*
+					 * Oluşturduğumuz kelimeleri dönüş yapacağımız listeye aktarıyoruz.
+					 */
 					result.Add(new OcrResult { Line = ++lineNumber, Text = item});
 				}
 			}
