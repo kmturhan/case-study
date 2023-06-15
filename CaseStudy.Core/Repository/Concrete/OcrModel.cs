@@ -1,4 +1,0 @@
-﻿namespace CampaignCodes.API.Models
-{
-	
-}
