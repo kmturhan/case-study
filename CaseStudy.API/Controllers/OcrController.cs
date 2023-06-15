@@ -13,31 +13,72 @@ namespace CaseStudy.API.Controllers
 		[HttpGet("JsonParse")]
 		public List<OcrResult> JsonParse()
 		{
-			
-			string fullPath = Path.Combine(Environment.CurrentDirectory, @"DummyFile\", "response.json");
+			/*
+			 * En son datayı döneceğimiz listeyi tanımlıyoruz.
+			 */
 			List<OcrResult> result = new List<OcrResult>();
+			/* 
+			 * CaseStudy.API projesinde DummyFile klasörünün altında response.json bulunuyor.
+			 * Dosya işlemleri satır 33'e kadar bu işlem gerçekleştiriliyor.
+			 */
+			string fullPath = Path.Combine(Environment.CurrentDirectory, @"DummyFile\", "response.json");
+			
 			using (StreamReader sr = new StreamReader(fullPath))
 			{
 				string json = sr.ReadToEnd();
+				/*
+				 * Burada json formatıyla aynı olan bir class kullanılıyor.
+				 * Deserialize işlemiyle bütün data listeye aktarılıyor.
+				 */
 				List<Ocr> items = JsonConvert.DeserializeObject<List<Ocr>>(json);
+
+				/*
+				 * Okunan datayı daha rahat işleyebileceğimiz farklı bir class'a aktarıyoruz.
+				 */ 
 				List<BoundingPoly> newParseJson = new List<BoundingPoly>();
 				foreach (var item in items)
 				{
+					/*
+					 * Bu blok içinde 4 farklı koordinatı verilen kelimenin orta noktasını bulmayı amaçlanıyor.
+					 * Bu yüzden kelimenin x ve y koordinatlarının ortalamalarınız alınıyor.
+					 * Ayrıca bir alt object içine kelimeyi bulmak zor olmasın diye 'description2' alanına taşınıyor.
+					 */
 					item.BoundingPoly.Description2 = item.Description;
 					item.BoundingPoly.AvgX = item.BoundingPoly.Vertices.Average(x => x.X);
 					item.BoundingPoly.AvgY = item.BoundingPoly.Vertices.Average(x => x.Y);
 
+					/*
+					 * İşlemler bitince yeni oluşturulan object yeni listeye aktarılıyor.
+					 */
 					newParseJson.Add(item.BoundingPoly);
 				}
+
+				/*
+				 * Aynı sırada olan kelimeleri gruplayabilmek için string array tanımlanıyor.
+				 */
 				List<string> rows = new List<string>();
 				foreach (var item in newParseJson.ToList())
 				{
-					double avgy = item.AvgY;
-					var currentRowWords = newParseJson.Where(x => (avgy - Ocr.standardDeviation) <= x.AvgY && x.AvgY <= (avgy + Ocr.standardDeviation)).ToList();	
+					/*
+					 * Aynı sırada olup olmadığını anlamak için Y değerini baz almamız gerekiyor.
+					 * 'currentAvgY' değişkenine her kelimenin ortalaması alınan y değeri aktarılıyor.
+					 */
+					double currentAvgY = item.AvgY;
+					/*
+					 * Koordinatlar stabil olarak gelmediği için hata payını da göz önünde bulundurmamız gerekiyor.
+					 * 'Ocr.standartDeviation' statik bir değişken bulunuyor. Bu görselden görsele değişebilir.
+					 * 'Ocr.standartDeviation' bu değişkenin yaptığı iş diğer kelimelerin, seçilen kelimeyle + veya - 10 
+					 * y ekseninde hizada olup olmamasını kontrol ediyor. Eğer şartlar sağlanırsa liste biçiminde 'currentRowWords' 'e aktarılıyor.
+					 */
+					var currentRowWords = newParseJson.Where(x => (currentAvgY - Ocr.standardDeviation) <= x.AvgY && x.AvgY <= (currentAvgY + Ocr.standardDeviation)).ToList();	
+					/*
+					 * Aynı satırda bulunan kelimeler join metoduyla listeye ekleniyor.
+					 */
 					rows.Add(string.Join(" ", currentRowWords.Select(x => x.Description2)));
-					foreach (var item1 in currentRowWords)
+					foreach (var currentWord in currentRowWords)
                     {
-						newParseJson.Remove(item1);
+
+						newParseJson.Remove(currentWord);
                     }
                 }
 				rows = rows.Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
