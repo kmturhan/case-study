@@ -16,6 +16,8 @@ https://github.com/kmturhan/case-study/tree/main/CaseStudy.Core/Repository/Concr
 https://github.com/kmturhan/case-study/blob/main/CaseStudy.API/Controllers/OcrController.cs
 
 
+
+
 İlk önce kod üretmemiz gerekiyor.
 
 "**/api/Product/CodeGenerates**" endpoint'ine istek yapmamız gerekiyor.
