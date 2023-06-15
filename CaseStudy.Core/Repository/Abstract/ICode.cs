@@ -7,6 +7,7 @@ namespace CaseStudy.Core.Repository.Abstract
 	{
 		List<Code> GetCodeList();
 		List<Code> CodeGenerates(int codeLength, int codeCount);
+		List<Code> CodeGenerates(int codeLength, int codeCount, string charSetParam);
 		List<Code> CodeCheck(List<string> codes);
 		Code CodeCheck(string code);
 	}

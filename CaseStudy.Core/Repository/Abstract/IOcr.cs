@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CaseStudy.Core.Repository.Abstract
 {
-	internal interface OcrModel
+	public interface IOcr
 	{
 	}
 }

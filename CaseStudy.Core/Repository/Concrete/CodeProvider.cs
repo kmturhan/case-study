@@ -8,14 +8,15 @@ namespace CaseStudy.Core.Repository.Concrete
 		
 		private static CodeProvider instance = null;
 		public static CodeProvider Instance => instance ?? (instance = new CodeProvider());
-		private static string str = "ACDEFGHKLMNPRTXYZ234579";
-		private static List<char> charSet = str.ToList();
+		private static string stringCharSet = "ACDEFGHKLMNPRTXYZ234579";
+		private static List<char> charSet = stringCharSet.ToList();
 		private static List<Code> codeList = new List<Code>();
 		
 		public List<Code> GetCodeList()
 		{
 			return codeList;
 		}
+
 		public List<Code> CodeGenerates(int codeLength, int codeCount)
 		{
 			Random rd = new Random();
@@ -37,6 +38,29 @@ namespace CaseStudy.Core.Repository.Concrete
 			}
 			return codeList;
 		}
+		public List<Code> CodeGenerates(int codeLength, int codeCount, string charSetParam)
+		{
+			charSet = charSetParam.ToList();
+			Random rd = new Random();
+			for (int i = 1; i <= codeCount; i++)
+			{
+			RecreateCode:
+				string code = "";
+				while (code.Length != codeLength)
+				{
+					int arrayIndex = rd.Next(0, charSet.Count);
+					char character = charSet[arrayIndex];
+					code += character;
+				}
+				if (codeList.Any(x => x.UniqueCode == code))
+				{
+					goto RecreateCode;
+				}
+				codeList.Add(new Code { UniqueCode = code, IsValid = false, CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now });
+			}
+			return codeList;
+		}
+
 		public List<Code> CodeCheck(List<string> codes)
 		{
 			List<Code> checkedList = new List<Code>();
@@ -52,6 +76,7 @@ namespace CaseStudy.Core.Repository.Concrete
 			}
 			return checkedList;
 		}
+
 		public Code CodeCheck(string code)
 		{
 			var item = codeList.SingleOrDefault(x => x.UniqueCode == code);

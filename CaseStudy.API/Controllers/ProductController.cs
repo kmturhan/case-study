@@ -23,17 +23,22 @@ namespace CaseStudy.API.Controllers
 		{
 			return CodeProvider.Instance.CodeGenerates(codeLength, codeCount);
 		}
+		[HttpPost("CodeGeneratesWithCharSet")]
+		public IEnumerable<Code> CodeGenerates(int codeLength = 8, int codeCount = 1000, string charSetParam = "ACDEFGHKLMNPRTXYZ234579")
+		{
+			return CodeProvider.Instance.CodeGenerates(codeLength, codeCount, charSetParam);
+		}
 
 		[HttpPut("UseCode")]
-		public Code UseCode(Code userCode)
+		public Code UseCode(string userCode)
 		{
-			return CodeProvider.Instance.CodeCheck(userCode.UniqueCode);
+			return CodeProvider.Instance.CodeCheck(userCode);
 		}
 
 		[HttpPut("UseCodes")]
-		public Code UseCodes(Code userCode)
+		public List<Code> UseCode(List<string> userCode)
 		{
-			return CodeProvider.Instance.CodeCheck(userCode.UniqueCode);
+			return CodeProvider.Instance.CodeCheck(userCode);
 		}
 	}
 }
