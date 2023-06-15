@@ -8,6 +8,14 @@ CaseStudy.API seçiliyken "dotnet run" komutuyla proje çalıştırılabilir.
 "Now listening on: http://localhost:5174" bu mesaj alındığında tarayıcıdan http://localhost:5174/swagger/index.html bu adrese gidebilirsiniz.
 
 # Örnekler
+
+Koddaki açıklamalarımı aşağıdaki iki adrese uzunca yazmaya çalıştım inceleyebilirsiniz. 
+
+https://github.com/kmturhan/case-study/tree/main/CaseStudy.Core/Repository/Concrete
+
+https://github.com/kmturhan/case-study/blob/main/CaseStudy.API/Controllers/OcrController.cs
+
+
 İlk önce kod üretmemiz gerekiyor.
 
 "**/api/Product/CodeGenerates**" endpoint'ine istek yapmamız gerekiyor.
